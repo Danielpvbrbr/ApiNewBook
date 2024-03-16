@@ -26,20 +26,29 @@
 
 ## Demonstração 💻
 
-> Cadastro de um livro:
+> Buscar todos os livros:
 
-![Imagem]()
+![ApiNewLivros_1](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/067ff490-b712-4ec9-8793-ee809d8ccf6d)
 <br/>
 
-> Atulização de um livro:
+> Buscar livro por id:
 
-![Imagem]()
+![ApiNewLivros_5](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/059a2923-b681-42b1-b897-e562a6b05d76)
 <br/>
 
-> Listagem dos livros cadastrados:
+> Cadastro livro:
 
-![Imagem]()
+![ApiNewLivros_2](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/d1ba8d93-81a9-44d9-a66a-8dab94ad27d9)
+<br/>
 
+> Atualizar livro:
+
+![ApiNewLivros_3](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/01cc12f8-328f-47a8-b72f-94d476878ded)
+<br/>
+
+> Deletar livro cadastrados
+
+![ApiNewLivros_4](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/d079407e-c7f8-41e6-b958-aa5a3da7ef54)
 <br/>
 
 ## Tecnologias 🛠️
