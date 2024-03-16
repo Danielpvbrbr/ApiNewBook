@@ -49,11 +49,4 @@
 - [.NET](https://learn.microsoft.com/pt-br/dotnet/)
   </br> </br>
 
-## Autora 👩🏼‍💻
-
- <a href="https://www.linkedin.com/in/raphaela-guiland-ferraz-32a980214">
-  <img align="center" src="https://avatars.githubusercontent.com/u/86068799?v=4" style="border-radius: 100%" width="100px" />
-  <sub><b>  Raphaela Guiland Ferraz</b></sub>
- </a>
-
 Feito com carinho por Daniel Nascimento 💜
