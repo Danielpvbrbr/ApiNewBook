@@ -1,5 +1,7 @@
 ﻿using ApiNewBook.Model;
 using ApiNewBook.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +9,7 @@ namespace ApiNewBook.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryRepository _repository;

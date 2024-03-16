@@ -1,12 +1,14 @@
 ﻿using ApiNewBook.Model;
 using ApiNewBook.Repository.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiNewBook.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class BookController : ControllerBase
 {
     private readonly IBookRepository _repository;
@@ -17,6 +19,7 @@ public class BookController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public ActionResult<IEnumerable<Book>> Get()
     {
         return Ok(_repository.GetBooks());
