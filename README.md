@@ -1,7 +1,4 @@
-﻿# ApiNewBook
-
 # API de Livros 📚
-
 </br>
 
 ## Descrição do Projeto 📝
@@ -22,9 +19,19 @@
 <h4> 
   Em Desenvolvimento ✅
 </h4>
-</br></br>
+</br>
 
-## Demonstração 💻
+# Demonstração 💻
+
+> Registro de usuário:
+
+![ApiNewLivros_7](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/ed1b998a-5cba-4d84-a402-45d90315c908)
+<br/>
+
+> Login de usuário:
+
+![ApiNewLivros_6](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/8da73b5b-9317-4d47-a40c-26cfcea51799)
+<br/>
 
 > Buscar todos os livros:
 
@@ -46,7 +53,7 @@
 ![ApiNewLivros_3](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/01cc12f8-328f-47a8-b72f-94d476878ded)
 <br/>
 
-> Deletar livro cadastrados
+> Deletar livro cadastrado
 
 ![ApiNewLivros_4](https://github.com/Danielpvbrbr/ApiNewBook/assets/71656809/d079407e-c7f8-41e6-b958-aa5a3da7ef54)
 <br/>
