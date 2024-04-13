@@ -1,10 +1,13 @@
-using AlunosApi.Services;
 using ApiNewBook.Contexts;
+using ApiNewBook.DTOs.Mappings;
 using ApiNewBook.Filter;
-using ApiNewBook.Repository;
-using ApiNewBook.Repository.Interfaces;
+using ApiNewBook.Repository.BookRepositories;
+using ApiNewBook.Repository.CategoryRepositories;
+using ApiNewBook.Repository.LanguageRepositories;
+using ApiNewBook.Services.AuthService;
+using ApiNewBook.Services.AuthServices;
+using ApiNewBook.Services.PasswordService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -17,22 +20,27 @@ builder.Services.AddControllers(opts=>
     opts.Filters.Add(typeof(ExceptionFilter));
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddAuthentication(
-        JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidAudience = builder.Configuration["TokenConfiguration:Audience"],
-            ValidIssuer = builder.Configuration["TokenConfiguration:Issuer"],
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-        });
+builder.Services.AddCors(ops =>
+{
+    ops.AddPolicy("AllowApiRequest",  builder => builder.WithOrigins("http://localhost:5173/").WithMethods("GET"));
+});
 
+//Cors sem restrição
+builder.Services.AddCors();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(ops =>
+{
+    ops.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+        ValidateAudience = false,
+        ValidateIssuer = false
+
+    };
+});
 
 //-----------------------------------------------------------------------------------------------------
 builder.Services.AddSwaggerGen(c =>
@@ -68,25 +76,33 @@ builder.Services.AddSwaggerGen(c =>
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(conn, ServerVersion.AutoDetect(conn)));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
-
 builder.Services.AddScoped<IBookRepository, BookRepositories>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepositories>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepositories>();
 
-builder.Services.AddTransient<IAuthenticate, AuthenticateService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<IPasswordService, PasswordService>();
 
 //-----------------------------------------------------------------------------------------------------
+builder.Services.AddAutoMapper(typeof(DTOsMapping));
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
+
+//Produção restrição
+//app.UseCors(opt => opt.WithOrigins("http://localhost:5173/").WithMethods("GET"));
+
+//Libera todos
+app.UseCors(opt => opt.AllowAnyOrigin());
 app.Run();

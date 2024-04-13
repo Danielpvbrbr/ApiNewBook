@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiNewBook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240307221644_InitialCreate")]
+    [Migration("20240410210325_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace ApiNewBook.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -46,8 +46,8 @@ namespace ApiNewBook.Migrations
 
                     b.Property<string>("description")
                         .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("varchar(600)");
+                        .HasMaxLength(900)
+                        .HasColumnType("varchar(900)");
 
                     b.Property<int>("languageId")
                         .HasColumnType("int");
@@ -118,6 +118,38 @@ namespace ApiNewBook.Migrations
                     b.HasKey("id");
 
                     b.ToTable("language");
+                });
+
+            modelBuilder.Entity("ApiNewBook.Model.UserAuth", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<DateTime>("TokenDateCreate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserAuth");
                 });
 
             modelBuilder.Entity("ApiNewBook.Model.Book", b =>

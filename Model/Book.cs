@@ -15,7 +15,7 @@ namespace ApiNewBook.Model
         public string? title { get; set; }
 
         [Required(ErrorMessage = "O campo e Obrigatório") ]
-        [StringLength(600, ErrorMessage = "O máximo de caracteres permitido e 600")]
+        [StringLength(900, ErrorMessage = "O máximo de caracteres permitido e 900")]
         public string? description { get; set; }
 
         [Required(ErrorMessage = "O campo e Obrigatório")]
@@ -27,7 +27,7 @@ namespace ApiNewBook.Model
         [StringLength(300, ErrorMessage = "O máximo de caracteres permitido e 300")]
         public string? pdfUrl { get; set; }
 
-        public DateTime dateCreate { get; set; }
+        public DateTime dateCreate { get; set; } = DateTime.Now;
 
         [StringLength(40, ErrorMessage = "O máximo de caracteres permitido e 40")]
         public string? publishingCompany { get; set; }

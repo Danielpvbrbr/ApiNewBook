@@ -1,5 +1,6 @@
-﻿using ApiNewBook.Model;
-using ApiNewBook.Repository.Interfaces;
+﻿using ApiNewBook.DTOs;
+using ApiNewBook.Model;
+using ApiNewBook.Repository.CategoryRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +20,16 @@ public class CategoryController : ControllerBase
         _repository = repository;
     }
 
-    [HttpGet]
-    public ActionResult<Category> Get()
+    [HttpGet("getAll")]
+    public async Task<ActionResult> Get()
     {
-        return Ok(_repository.GetCategory());
+        return Ok(await _repository.Get());
     }
 
-    [HttpGet("{id:int:min(1)}", Name = "GetCategory")]
-    public ActionResult<Category> GetById(int id)
+    [HttpGet("getById/{id:int:min(1)}", Name = "GetCategory")]
+    public async Task<ActionResult> GetById(int id)
     {
-        var category = _repository.GetByIdCategory(id);
+        var category = await _repository.GetById(id);
         if (category is null)
         {
             return NotFound($"Categoria com do id {id} Não encontrado");
@@ -37,41 +38,51 @@ public class CategoryController : ControllerBase
         return Ok(category);
     }
 
-    [HttpPost]
-    public ActionResult<Category> Post(Category category)
+    [HttpPost("add")]
+    [Authorize]
+    public async Task<ActionResult> Post(CategoryDTO categoryDTO)
     {
-        var categoryCreate = _repository.PostCategory(category);
+        var categoryCreate =  await _repository.Post(categoryDTO);
+
         if (categoryCreate is null)
         {
             return BadRequest("Erro ao salvar os dados no banco");
         }
-        return new CreatedAtRouteResult("GetCategory",
-            new { id = categoryCreate.id }, categoryCreate);
+
+        return Ok(categoryDTO);
+
+        //return new CreatedAtRouteResult("GetCategory",
+        //    new { id = categoryCreate.id }, categoryCreate);
     }
 
-    [HttpPut("{id:int:min(1)}")]
-    public ActionResult<Category> Put(int id, Category category)
+    [HttpPut("update/{id:int:min(1)}")]
+    [Authorize]
+    public async Task<ActionResult> Put(int id, Category category)
     {
         if (category.id != id)
         {
             return NotFound($"Categoria com do id {id} Não encontrado");
         }
 
-        var categoryCreate = _repository.Update(category);
+        var categoryCreate = await _repository.Update(category);
+
         return Ok(categoryCreate);
     }
 
-    [HttpDelete("{id:int:min(1)}")]
-    public ActionResult<Category> Delete(int id) {
-        var category = _repository.GetByIdCategory(id);
+    [HttpDelete("remove/{id:int:min(1)}")]
+    [Authorize]
+    public async Task<ActionResult> Delete(int id) {
+
+        var category = await _repository.GetById(id);
 
         if (category is null)
         {
             return NotFound($"Categoria com do id {id} Não encontrado");
         }
-        var categoryDelected = _repository.Delete(id);
-        return Ok(categoryDelected);
 
+        var categoryDelected = await _repository.Delete(id);
+
+        return Ok(categoryDelected);
     }
 
 }

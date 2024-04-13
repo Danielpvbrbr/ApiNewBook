@@ -46,6 +46,26 @@ namespace ApiNewBook.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "UserAuth",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    User = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PasswordHash = table.Column<byte[]>(type: "longblob", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "longblob", nullable: false),
+                    TokenDateCreate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAuth", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "book",
                 columns: table => new
                 {
@@ -53,7 +73,7 @@ namespace ApiNewBook.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     title = table.Column<string>(type: "varchar(40)", maxLength: 40, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "varchar(600)", maxLength: 600, nullable: false)
+                    description = table.Column<string>(type: "varchar(900)", maxLength: 900, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     caseUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -65,9 +85,9 @@ namespace ApiNewBook.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     sentByName = table.Column<string>(type: "varchar(40)", maxLength: 40, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    year = table.Column<int>(type: "int", nullable: false),
                     categoryId = table.Column<int>(type: "int", nullable: false),
-                    languageId = table.Column<int>(type: "int", nullable: false),
-                    year = table.Column<int>(type: "int", nullable: false)
+                    languageId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,6 +123,9 @@ namespace ApiNewBook.Migrations
         {
             migrationBuilder.DropTable(
                 name: "book");
+
+            migrationBuilder.DropTable(
+                name: "UserAuth");
 
             migrationBuilder.DropTable(
                 name: "category");

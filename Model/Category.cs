@@ -14,7 +14,6 @@ namespace ApiNewBook.Model
         [Key]
         public int id { get; set; }
 
-        [Required(ErrorMessage = "O campo e Obrigatório")]
         [StringLength(20, ErrorMessage = "O máximo de caracteres permitido e 20")]
         public string? name { get; set; }
 

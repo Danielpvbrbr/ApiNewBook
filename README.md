@@ -3,7 +3,7 @@
 
 ## Descrição do Projeto 📝
 
-<p id="descricao"> Esta é uma API desenvolvida em C# e .NET que realiza o cadastro de livros. Nesta API é possível, além de cadastrar livros, atualizá-los, cadastrar e atualizar o(a) autor(a) e cadastrar e atualizar a editora. </p>
+<p id="descricao"> Esta é uma API desenvolvida em C# e .NET que realiza o cadastro de livros. Nesta API é possível, além de cadastrar livros, atualizá-los, cadastrar e atualizar o(a) autor(a). </p>
 
 </br></br>
 

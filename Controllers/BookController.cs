@@ -1,5 +1,6 @@
-﻿using ApiNewBook.Model;
-using ApiNewBook.Repository.Interfaces;
+﻿using ApiNewBook.DTOs;
+using ApiNewBook.Model;
+using ApiNewBook.Repository.BookRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace ApiNewBook.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
 public class BookController : ControllerBase
 {
     private readonly IBookRepository _repository;
@@ -18,17 +19,16 @@ public class BookController : ControllerBase
         _repository = repository;
     }
 
-    [HttpGet]
-    [Authorize]
-    public ActionResult<IEnumerable<Book>> Get()
+    [HttpGet("getAll")]
+    public async Task<ActionResult> Get()
     {
-        return Ok(_repository.GetBooks());
+        return Ok(await _repository.GetBooks());
     }
 
-    [HttpGet("{id:int:min(1)}", Name = "GetBook")]
-    public ActionResult<Book> GetById(int id)
+    [HttpGet("getById/{id:int:min(1)}", Name = "GetBook")]
+    public async Task<ActionResult> GetById(int id)
     {
-        var book = _repository.GetByIdBook(id);
+        var book = await _repository.GetByIdBook(id);
 
         if(book is null) {
             return NotFound($"Livro com do id {id} Não encontrado");
@@ -37,40 +37,46 @@ public class BookController : ControllerBase
         return Ok(book);
     }
 
-    [HttpPost]
-    public ActionResult<Book> Post(Book book)
+    [HttpPost("add")]
+    //[Authorize]
+    public async Task<ActionResult> Post(BookDTOCreate bookDTOCreate)
     {
-        var bookCreate = _repository.PostBook(book);
+        var bookCreate = await _repository.PostBook(bookDTOCreate);
 
         if (bookCreate is null)
         {
             return BadRequest("Erro ao salvar os dados no banco");
         }
 
-        return new CreatedAtRouteResult("GetBook", 
-            new { id = bookCreate.id }, bookCreate);
+        // return new CreatedAtRouteResult("GetBook", new { id = bookCreate.id }, bookCreate);
+        return Ok(bookCreate);
     }
 
-    [HttpPut("{id:int:min(1)}")]
-    public ActionResult<Book> Update(int id, Book book)
+    [HttpPut("update/{id:int:min(1)}")]
+    //[Authorize]
+    public async Task<ActionResult> Update(int id, BookDTO bookDTO)
     {
-        if (id != book.id)
+        if (id != bookDTO.id)
         {
             return NotFound($"Produto com do id {id} Não encontrado");
         }
-        _repository.Update(book);
-        return Ok(book);
+
+       var bookCreate =  await _repository.Update(bookDTO);
+
+        return Ok(bookCreate);
     }
 
-    [HttpDelete("{id:int:min(1)}")]
-    public ActionResult<Book> Delete(int id) {
+    [HttpDelete("remove/{id:int:min(1)}")]
+    //[Authorize]
+    public async Task<ActionResult> Delete(int id) {
 
-        var book = _repository.Delete(id);
-        if (book is null)
+        var book = await _repository.Delete(id);
+        if (id != book.id)
         {
-            return BadRequest("Erro ao deletar o dados no banco");
+            return NotFound("Erro ao deletar o dados no banco");
         }
-        var bookDeleted = _repository.Delete(id);
+
+        var bookDeleted = await _repository.Delete(id);
         return Ok(bookDeleted);
     }
 }

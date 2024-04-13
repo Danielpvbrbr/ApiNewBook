@@ -1,5 +1,7 @@
-﻿using ApiNewBook.Model;
-using ApiNewBook.Repository.Interfaces;
+﻿using ApiNewBook.DTOs;
+using ApiNewBook.Model;
+using ApiNewBook.Repository.LanguageRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,16 +18,16 @@ namespace ApiNewBook.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public ActionResult<Language> Get()
+        [HttpGet("getAll")]
+        public async Task<ActionResult> Get()
         {
-            return Ok(_repository.GetLanguages());
+            return Ok(await _repository.Get());
         }
 
-        [HttpGet("{id:int:min(1)}",Name = "GetLanguages")]
-        public ActionResult<Language> GetByIdLanguages(int id)
+        [HttpGet("getById/{id:int:min(1)}",Name = "GetLanguages")]
+        public async Task<ActionResult> GetByIdLanguages(int id)
         {
-            var languages = _repository.GetByIdLanguage(id);
+            var languages = await _repository.GetById(id);
 
             if (languages is null)
             {
@@ -35,40 +37,50 @@ namespace ApiNewBook.Controllers
             return Ok(languages);
         }
 
-        [HttpPost]
-        public ActionResult<Language> Post(Language language)
+        [HttpPost("add")]
+        [Authorize]
+        public async Task<ActionResult> Post(LanguageDTO languageDTO)
         {
-            var languageCreate = _repository.PostLanguage(language);
+
+            var languageCreate = await _repository.Post(languageDTO);
 
             if (languageCreate is null)
             {
                 return BadRequest("Erro ao savar dados no banco..");
             }
 
-            return new CreatedAtRouteResult("GetLanguages", new {id = languageCreate.id}, languageCreate);
+            //return new CreatedAtRouteResult("GetLanguages", new {name = languageDTO.name}, languageDTO);
+            return Ok(languageDTO);
         }
 
-        [HttpPut("{id:int:min(1)}")]
-        public ActionResult<Language> Put(int id, Language language)
+        [HttpPut("update/{id:int:min(1)}")]
+        [Authorize]
+        public async Task<ActionResult> Put(int id, Language languageDTO)
         {
-            if (language.id != id)
+
+            if (id != languageDTO.id)
             {
-                return NotFound($"Categoria com do id {id} Não encontrado");
+                return BadRequest($"Categoria com do id {id} Não encontrado");
             }
-            var languagesDeleted = _repository.Update(language);
-            return Ok(languagesDeleted);
+
+             await _repository.Update(languageDTO);
+
+            return Ok(languageDTO);
         }
 
-        [HttpDelete("{id:int:min(1)}")]
-        public ActionResult<Language> Delete(int id)
+        [HttpDelete("remove/{id:int:min(1)}")]
+        [Authorize]
+        public async Task<ActionResult> Delete(int id)
         {
-            var language = _repository.GetByIdLanguage(id);
+            var language = await _repository.GetById(id);
 
             if (language is null)
             {
                 return NotFound($"Categoria com do id {id} Não encontrado");
             }
-            var languagesDeleted = _repository.Delete(id);
+
+            var languagesDeleted = await _repository.Delete(id);
+
             return Ok(languagesDeleted);
         }
     }
