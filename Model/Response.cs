@@ -7,5 +7,7 @@
         public string Message { get; set; }
 
         public bool Status { get; set; }
+
+        public UserResponse? Values { get; set; }
     }
 }

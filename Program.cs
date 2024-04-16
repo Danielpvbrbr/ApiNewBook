@@ -20,13 +20,18 @@ builder.Services.AddControllers(opts=>
     opts.Filters.Add(typeof(ExceptionFilter));
 });
 
-builder.Services.AddCors(ops =>
+builder.Services.AddCors(options =>
 {
-    ops.AddPolicy("AllowApiRequest",  builder => builder.WithOrigins("http://localhost:5173/").WithMethods("GET"));
+    options.AddDefaultPolicy(policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                      });
 });
 
 //Cors sem restrição
-builder.Services.AddCors();
+//builder.Services.AddCors();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -94,15 +99,16 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+//Produção restrição
+app.UseCors();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-//Produção restrição
-//app.UseCors(opt => opt.WithOrigins("http://localhost:5173/").WithMethods("GET"));
 
 //Libera todos
-app.UseCors(opt => opt.AllowAnyOrigin());
+//app.UseCors(opt => opt.AllowAnyOrigin());
 app.Run();

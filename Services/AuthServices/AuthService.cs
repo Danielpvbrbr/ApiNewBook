@@ -4,6 +4,7 @@ using ApiNewBook.Model;
 using ApiNewBook.Services.AuthServices;
 using ApiNewBook.Services.PasswordService;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiNewBook.Services.AuthService
@@ -48,8 +49,10 @@ namespace ApiNewBook.Services.AuthService
                 await _context.SaveChangesAsync();
 
                 var isUsers = await _context.UserAuths.FirstOrDefaultAsync(x => x.Email == usersCreateDTO.Email);
-
+                var teste = await _context.UserAuths.FindAsync(usersCreateDTO.Email);
                 var token = _passwordService.CreateToken(isUsers!);
+
+              
 
                 response.Data = token;
                 response.Message = "Usuário criado com sucesso!";
@@ -89,9 +92,16 @@ namespace ApiNewBook.Services.AuthService
 
                 var token = _passwordService.CreateToken(users);
 
+                UserResponse userResponse = new UserResponse()
+                {
+                    User = users.User,
+                    Email = users.Email
+                };
+
                 response.Data = token;
                 response.Message = "Usuário autenticado com sucesso!";
                 response.Status = true;
+                response.Values = userResponse;
             }
             catch (Exception ex)
             {

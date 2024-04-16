@@ -38,7 +38,7 @@ public class BookController : ControllerBase
     }
 
     [HttpPost("add")]
-    //[Authorize]
+    [Authorize]
     public async Task<ActionResult> Post(BookDTOCreate bookDTOCreate)
     {
         var bookCreate = await _repository.PostBook(bookDTOCreate);
@@ -53,7 +53,7 @@ public class BookController : ControllerBase
     }
 
     [HttpPut("update/{id:int:min(1)}")]
-    //[Authorize]
+    [Authorize]
     public async Task<ActionResult> Update(int id, BookDTO bookDTO)
     {
         if (id != bookDTO.id)
@@ -67,7 +67,7 @@ public class BookController : ControllerBase
     }
 
     [HttpDelete("remove/{id:int:min(1)}")]
-    //[Authorize]
+    [Authorize]
     public async Task<ActionResult> Delete(int id) {
 
         var book = await _repository.Delete(id);
