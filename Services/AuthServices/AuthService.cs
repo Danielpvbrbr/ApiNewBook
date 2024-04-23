@@ -49,14 +49,19 @@ namespace ApiNewBook.Services.AuthService
                 await _context.SaveChangesAsync();
 
                 var isUsers = await _context.UserAuths.FirstOrDefaultAsync(x => x.Email == usersCreateDTO.Email);
-                var teste = await _context.UserAuths.FindAsync(usersCreateDTO.Email);
+                //var teste = await _context.UserAuths.FindAsync(usersCreateDTO.Email);
                 var token = _passwordService.CreateToken(isUsers!);
 
-              
+                UserResponse userResponse = new UserResponse()
+                {
+                    User = users.User,
+                    Email = users.Email
+                };
 
                 response.Data = token;
                 response.Message = "Usuário criado com sucesso!";
                 response.Status = true;
+                response.Values = userResponse;
             }
             catch (Exception ex)
             {

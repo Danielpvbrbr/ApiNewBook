@@ -7,7 +7,8 @@ namespace ApiNewBook.Model
     [Table("category")]
     public class Category
     {
-        public Category() { 
+        public Category()
+        {
             Books = new List<Book>();
         }
 
@@ -15,7 +16,7 @@ namespace ApiNewBook.Model
         public int id { get; set; }
 
         [StringLength(20, ErrorMessage = "O máximo de caracteres permitido e 20")]
-        public string? name { get; set; }
+        public string name { get; set; }
 
         [JsonIgnore]
         public ICollection<Book> Books { get; set;}

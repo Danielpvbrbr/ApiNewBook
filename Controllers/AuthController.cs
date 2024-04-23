@@ -1,5 +1,6 @@
 ﻿using ApiNewBook.DTOs;
 using ApiNewBook.Services.AuthServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiAlunos.Controllers
@@ -29,6 +30,13 @@ namespace ApiAlunos.Controllers
             var response = await _authService.Login(usersLoginDTO);
 
             return Ok(response);
+        }
+
+        [HttpGet("Atenticated")]
+        [Authorize]
+        public ActionResult Atenticated()
+        {
+            return Ok("Usuário Autenticated");
         }
     }
 }

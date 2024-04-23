@@ -55,7 +55,7 @@ namespace ApiNewBook.Repository.BookRepositories
             _context.Books.Remove(books!);
             await _context.SaveChangesAsync();
 
-            return books!;
+            return books;
         }
     }
 }

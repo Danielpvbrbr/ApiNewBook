@@ -56,9 +56,9 @@ public class BookController : ControllerBase
     [Authorize]
     public async Task<ActionResult> Update(int id, BookDTO bookDTO)
     {
-        if (id != bookDTO.id)
+        if (bookDTO.id != id)
         {
-            return NotFound($"Produto com do id {id} Não encontrado");
+            return NotFound($"Livro com do id {id} Não encontrado");
         }
 
        var bookCreate =  await _repository.Update(bookDTO);
@@ -67,16 +67,18 @@ public class BookController : ControllerBase
     }
 
     [HttpDelete("remove/{id:int:min(1)}")]
-    [Authorize]
+    //[Authorize]
     public async Task<ActionResult> Delete(int id) {
 
-        var book = await _repository.Delete(id);
-        if (id != book.id)
+        var book = await _repository.GetByIdBook(id);
+
+        if (book is null)
         {
-            return NotFound("Erro ao deletar o dados no banco");
+            return NotFound($"Livro com do id {id} Não encontrado");
         }
 
         var bookDeleted = await _repository.Delete(id);
+
         return Ok(bookDeleted);
     }
 }

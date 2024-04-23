@@ -11,9 +11,10 @@ namespace ApiNewBook.Repository.CategoryRepositories
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public CategoryRepositories(AppDbContext context)
+        public CategoryRepositories(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Category>> Get()
@@ -43,7 +44,6 @@ namespace ApiNewBook.Repository.CategoryRepositories
 
             return category;
         }
-
 
         public async Task<Category> Delete(int id)
         {
