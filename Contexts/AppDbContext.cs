@@ -11,6 +11,6 @@ public class AppDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<UserAuth> UserAuths { get ; set; }
-
+    public DbSet<Favorite> Favorites { get; set; }
 
 }

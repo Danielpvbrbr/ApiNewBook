@@ -37,14 +37,15 @@ namespace ApiNewBook.Model
 
         public int year { get; set; }
 
-        public int categoryId { get; set; }
         public int languageId { get; set; }
-
         [JsonIgnore]
         public Language? Languages { get; set; }
 
+        public int categoryId { get; set; }
         [JsonIgnore]
         public Category? Categories { get; set; }
 
+        [JsonIgnore]
+        public ICollection<Favorite>? Favorites { get; set; }
     }
 }

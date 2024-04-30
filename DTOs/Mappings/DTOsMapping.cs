@@ -11,6 +11,6 @@ public class DTOsMapping : Profile
         CreateMap<Book, BookDTOCreate>().ReverseMap();
         CreateMap<Language, LanguageDTO>().ReverseMap();
         CreateMap<Category, CategoryDTO>().ReverseMap();
-
+        CreateMap<Favorite, FavoriteDTO>().ReverseMap();
     }
 }

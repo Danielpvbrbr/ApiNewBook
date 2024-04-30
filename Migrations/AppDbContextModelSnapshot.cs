@@ -78,7 +78,7 @@ namespace ApiNewBook.Migrations
 
                     b.HasIndex("languageId");
 
-                    b.ToTable("book");
+                    b.ToTable("book", (string)null);
                 });
 
             modelBuilder.Entity("ApiNewBook.Model.Category", b =>
@@ -96,7 +96,33 @@ namespace ApiNewBook.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("category");
+                    b.ToTable("category", (string)null);
+                });
+
+            modelBuilder.Entity("ApiNewBook.Model.Favorite", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("bookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("userEmail")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("bookId");
+
+                    b.ToTable("favorite", (string)null);
                 });
 
             modelBuilder.Entity("ApiNewBook.Model.Language", b =>
@@ -114,7 +140,7 @@ namespace ApiNewBook.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("language");
+                    b.ToTable("language", (string)null);
                 });
 
             modelBuilder.Entity("ApiNewBook.Model.UserAuth", b =>
@@ -146,7 +172,7 @@ namespace ApiNewBook.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserAuth");
+                    b.ToTable("UserAuth", (string)null);
                 });
 
             modelBuilder.Entity("ApiNewBook.Model.Book", b =>
@@ -166,6 +192,22 @@ namespace ApiNewBook.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("Languages");
+                });
+
+            modelBuilder.Entity("ApiNewBook.Model.Favorite", b =>
+                {
+                    b.HasOne("ApiNewBook.Model.Book", "Book")
+                        .WithMany("Favorites")
+                        .HasForeignKey("bookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("ApiNewBook.Model.Book", b =>
+                {
+                    b.Navigation("Favorites");
                 });
 
             modelBuilder.Entity("ApiNewBook.Model.Category", b =>

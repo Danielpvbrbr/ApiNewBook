@@ -32,7 +32,7 @@ namespace ApiAlunos.Controllers
             return Ok(response);
         }
 
-        [HttpGet("Atenticated")]
+        [HttpGet("authorization")]
         [Authorize]
         public ActionResult Atenticated()
         {

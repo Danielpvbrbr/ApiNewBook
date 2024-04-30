@@ -4,16 +4,19 @@ using System.Text.Json.Serialization;
 
 namespace ApiNewBook.Model
 {
-    [Table("category")]
-    public class Category
+    [Table("favorite")]
+    public class Favorite
     {
         [Key]
         public int id { get; set; }
 
-        [StringLength(20, ErrorMessage = "O máximo de caracteres permitido e 20")]
-        public string name { get; set; }
+        public string title { get; set; }
 
+        [EmailAddress]
+        public string userEmail { get; set; }
+
+        public int bookId { get; set; }
         [JsonIgnore]
-        public ICollection<Book>? Books { get; set;}
+        public Book? Book { get; set; }
     }
 }

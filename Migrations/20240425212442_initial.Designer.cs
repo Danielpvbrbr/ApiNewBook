@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiNewBook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240410210325_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240425212442_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +102,32 @@ namespace ApiNewBook.Migrations
                     b.ToTable("category");
                 });
 
+            modelBuilder.Entity("ApiNewBook.Model.Favorite", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("bookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("userEmail")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("bookId");
+
+                    b.ToTable("favorite");
+                });
+
             modelBuilder.Entity("ApiNewBook.Model.Language", b =>
                 {
                     b.Property<int>("id")
@@ -169,6 +195,22 @@ namespace ApiNewBook.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("Languages");
+                });
+
+            modelBuilder.Entity("ApiNewBook.Model.Favorite", b =>
+                {
+                    b.HasOne("ApiNewBook.Model.Book", "Book")
+                        .WithMany("Favorites")
+                        .HasForeignKey("bookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("ApiNewBook.Model.Book", b =>
+                {
+                    b.Navigation("Favorites");
                 });
 
             modelBuilder.Entity("ApiNewBook.Model.Category", b =>

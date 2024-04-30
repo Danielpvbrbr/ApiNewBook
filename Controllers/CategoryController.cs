@@ -1,11 +1,8 @@
 ﻿using ApiNewBook.DTOs;
 using ApiNewBook.Model;
 using ApiNewBook.Repository.CategoryRepositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 namespace ApiNewBook.Controllers;
 
 [Route("[controller]")]
@@ -30,10 +27,8 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult> GetById(int id)
     {
         var category = await _repository.GetById(id);
-        if (category is null)
-        {
-            return NotFound($"Categoria com do id {id} Não encontrado");
-        } 
+
+        if (category is null) return NotFound($"Categoria com do id {id} Não encontrado"); 
 
         return Ok(category);
     }
@@ -44,10 +39,7 @@ public class CategoryController : ControllerBase
     {
         var categoryCreate =  await _repository.Post(categoryDTO);
 
-        if (categoryCreate is null)
-        {
-            return BadRequest("Erro ao salvar os dados no banco");
-        }
+        if (categoryCreate is null) return BadRequest("Erro ao salvar os dados no banco");
 
         return Ok(categoryDTO);
 
@@ -59,10 +51,7 @@ public class CategoryController : ControllerBase
     [Authorize]
     public async Task<ActionResult> Put(int id, Category category)
     {
-        if (category.id != id)
-        {
-            return NotFound($"Categoria com do id {id} Não encontrado");
-        }
+        if (category.id != id) return NotFound($"Categoria com do id {id} Não encontrado");
 
         var categoryCreate = await _repository.Update(category);
 
@@ -75,10 +64,7 @@ public class CategoryController : ControllerBase
 
         var category = await _repository.GetById(id);
 
-        if (category is null)
-        {
-            return NotFound($"Categoria com do id {id} Não encontrado");
-        }
+        if (category is null) return NotFound($"Categoria com do id {id} Não encontrado");
 
         var categoryDelected = await _repository.Delete(id);
 

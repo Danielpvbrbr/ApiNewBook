@@ -3,6 +3,7 @@ using ApiNewBook.DTOs.Mappings;
 using ApiNewBook.Filter;
 using ApiNewBook.Repository.BookRepositories;
 using ApiNewBook.Repository.CategoryRepositories;
+using ApiNewBook.Repository.FavoriteRepositories;
 using ApiNewBook.Repository.LanguageRepositories;
 using ApiNewBook.Services.AuthService;
 using ApiNewBook.Services.AuthServices;
@@ -84,6 +85,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(conn, Se
 builder.Services.AddScoped<IBookRepository, BookRepositories>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepositories>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepositories>();
+builder.Services.AddScoped<IFavoriteRepositories, FavoriteRepositories>();
 
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();

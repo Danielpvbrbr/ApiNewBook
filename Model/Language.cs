@@ -7,10 +7,6 @@ namespace ApiNewBook.Model
     [Table("language")]
     public class Language
     {
-        public Language()
-        {
-            Books = new List<Book>();
-        }
 
         [Key]
         public int id { get; set; }
@@ -19,6 +15,6 @@ namespace ApiNewBook.Model
         public string name { get; set; }
 
         [JsonIgnore]
-        public ICollection<Book> Books { get; set; }
+        public ICollection<Book>? Books { get; set; }
     }
 }
